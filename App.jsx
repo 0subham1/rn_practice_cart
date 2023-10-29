@@ -2,7 +2,7 @@ import {View, Text, FlatList, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {PaperProvider} from 'react-native-paper';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {  Button } from "react-native-paper";
+import {Button} from 'react-native-paper';
 
 const App = () => {
   const [cart, setCart] = useState([]);
@@ -14,31 +14,13 @@ const App = () => {
     {name: 'mango', price: 40},
   ];
 
-  useEffect(() => {
-    console.log(cart, 'cart');
-  }, [cart]);
-
   const handleAddToCart = item => {
     item.qty = 1;
     item.amount = item.price;
 
-    handleTotal([...cart, item]);
-
     setCart([...cart, item]);
+    handleTotal([...cart, item]);
   };
-
-  // const handleAddToCart = item => {
-  //   let arr = [...cart];
-
-  //   item.qty = 1;
-  //   item.amount = item.price
-  //   handleTotal([cart])
-  //   setCart([...cart, item]);
-  // };
-
-  useEffect(() => {
-    handleTotal(cart);
-  }, [cart]);
 
   const handleQtyInc = i => {
     let arr = [...cart];
@@ -88,46 +70,45 @@ const App = () => {
                 }}>
                 <Text>{item.name}</Text>
                 <Text>{item.price}</Text>
-                <Button onPress={() => handleAddToCart(item)}>
-                  Add
-                </Button>
+                <Button onPress={() => handleAddToCart(item)}>Add</Button>
               </View>
             )}
           />
         )}
 
-        <View
-          style={{
-            margin: '50px',
-            padding: '50px',
-            flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}>
-          <Text>Cart:</Text>
-          <Text>Total:{total}</Text>
-          <Text onPress={() => setCart([])}>clear Cart:</Text>
-        </View>
         {cart.length > 0 && (
-          <FlatList
-            data={cart}
-            renderItem={({item, index}) => (
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}>
-                <Text>{item.name}</Text>
-                <Text>qty: {item.qty}</Text>
-                <Text>price: {item.price}</Text>
+          <>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}>
+              <Text>Cart:</Text>
+              <Text>Total:{total}</Text>
+              <Button onPress={() => setCart([])}>clear Cart</Button>
+            </View>
+            <FlatList
+              data={cart}
+              renderItem={({item, index}) => (
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <Text>{item.name}</Text>
+                  <Text>qty: {item.qty}</Text>
+                  <Text>price: {item.price}</Text>
 
-                <Button onPress={() => handleQtyInc(index)}>+</Button>
-                <Button onPress={() => handleQtyDec(index)}>-</Button>
-                <Button onPress={() => handleRemoveItem(index)}>X</Button>
-              </View>
-            )}
-          />
+                  <Button onPress={() => handleQtyInc(index)}>+</Button>
+                  <Button onPress={() => handleQtyDec(index)}>-</Button>
+                  <Button onPress={() => handleRemoveItem(index)}>X</Button>
+                </View>
+              )}
+            />
+          </>
         )}
       </PaperProvider>
     </SafeAreaProvider>
